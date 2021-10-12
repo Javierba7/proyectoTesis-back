@@ -8,7 +8,7 @@ const { registerValidation, loginValidation } = require('../../validate/validate
 
 router.get('/', async (req, res) => {
     const users = await User.find();
-    return users; 
+    res.send(users);
 });
 
 router.post('/register', async (req, res) => {
