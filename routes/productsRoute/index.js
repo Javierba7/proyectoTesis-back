@@ -1,6 +1,13 @@
 const router = require('express').Router();
 
 const Product = require('../../models/products');
+const fs = require('fs')
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
+
+const multer = require('multer');
+const upload = multer();
+
 const { uploadFile } = require('../../s3');
 
 router.get('/', async (req, res) => {
@@ -19,21 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/add', async (req, res) => {
-    /*
-    const { image } = req.files
-    const uploadedFile = await uploadFile(req.files);
-    console.log(uploadedFile);
-    //mandar a llamar la funcion para traer la url del servicio
-
-    */
-    const newProduct = new Product({...req.body});
-
-    try {
-        const savedProduct = await newProduct.save();
-        res.send(savedProduct);
-    } catch(e) {
-        res.status(404).send(e);
-    }
+    const result = await uploadFile(req, res);
 });
 
 router.delete('/delete/:id', async (req, res) => {
