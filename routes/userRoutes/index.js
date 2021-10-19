@@ -11,6 +11,29 @@ router.get('/', async (req, res) => {
     res.send(users);
 });
 
+router.get('/user/:id', async(req, res) => {
+  try {
+      const user = await User.findById({ _id: req.params.id });
+      res.send(user);
+      console.log(`test`);
+  } catch (err) {
+      res.status(400).send(err);
+  }
+});
+
+router.post('/user/:id/update', async(req, res) => {
+  const { result } = req.body;
+  
+  const updatePurchases = await User.findByIdAndUpdate({_id: req.params.id}, { $push : {purchases: result }});
+  try {
+      const purchasesSaved = await updatePurchases.save();
+      res.send(purchasesSaved);
+  } catch(err) {
+      res.send(err);
+  }
+  
+});
+
 router.post('/register', async (req, res) => {
     const { name, secondName = '', lastName } = req.body;
     const { secondLastName, email, password } = req.body;
