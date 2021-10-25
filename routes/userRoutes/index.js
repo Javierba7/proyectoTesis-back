@@ -11,17 +11,16 @@ router.get('/', async (req, res) => {
     res.send(users);
 });
 
-router.get('/user/:id', async(req, res) => {
+router.get('/:id', async(req, res) => {
   try {
       const user = await User.findById({ _id: req.params.id });
       res.send(user);
-      console.log(`test`);
   } catch (err) {
       res.status(400).send(err);
   }
 });
 
-router.post('/user/:id/update', async(req, res) => {
+router.post('/:id/update', async(req, res) => {
   const { result } = req.body;
   
   const updatePurchases = await User.findByIdAndUpdate({_id: req.params.id}, { $push : {purchases: result }});
@@ -31,7 +30,15 @@ router.post('/user/:id/update', async(req, res) => {
   } catch(err) {
       res.send(err);
   }
-  
+});
+
+router.put('/update/:id', async (req, res) => {
+  try {
+      const productUpdate = await User.findByIdAndUpdate({_id: req.params.id}, req.body);
+      res.send(productUpdate);
+  } catch (e) {
+      console.log(e);
+  }
 });
 
 router.post('/register', async (req, res) => {
@@ -68,7 +75,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
     const { error } = loginValidation(req.body);
-    if (error) return res.status(400).send({ error: error.details[0].message });
+    if (error) return res.status(400).send({ error: 'Ingrese correctamente el correo y contraseña' });
   
     const user = await User.findOne({ email });
     if (!user) return res.status(400).send({ error: 'El correo no existe' });

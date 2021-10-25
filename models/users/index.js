@@ -30,7 +30,7 @@ const UserSchema = new Schema({
         required: true,
     },
     purchases: {
-        type: [String]
+        type: [[]]
     }
 })
 

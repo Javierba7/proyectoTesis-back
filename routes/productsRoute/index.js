@@ -29,6 +29,16 @@ router.post('/add', async (req, res) => {
     const result = await uploadFile(req, res);
 });
 
+router.put('/update/:id', async (req, res) => {
+    console.log(req.body);
+    try {
+        const productUpdate = await Product.findByIdAndUpdate({_id: req.params.id}, req.body);
+        res.send(productUpdate);
+    } catch (e) {
+        console.log(e);
+    }
+});
+
 router.delete('/delete/:id', async (req, res) => {
     try {
     const deletedItem = await Product.findByIdAndDelete({ _id: req.params.id });
