@@ -33,11 +33,11 @@ const upload = (bucketName) =>
 
   const uploadProductToDB = async (data, url) => {
     const newData = JSON.parse(data);
-    const { nameAdd, quantityAdd, priceAdd, department } = newData;
+    const { name, quantity, price, department } = newData;
     const newProduct = new Product({
-      name: nameAdd,
-      quantity: quantityAdd,
-      price: priceAdd,
+      name,
+      quantity,
+      price,
       department,
       imgUrl: url
     });
